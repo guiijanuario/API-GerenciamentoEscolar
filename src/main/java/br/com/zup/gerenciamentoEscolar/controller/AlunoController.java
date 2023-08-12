@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -28,10 +29,18 @@ public class AlunoController {
     LogEventosService logEventosService;
 
     @GetMapping("/alunos")
-    @Operation(summary = " : Lista todas os alunos", method = "GET")
-    public ResponseEntity<List<AlunoModel>> listarTodosAlunos(){
+    @Operation(summary = " : Lista todos os alunos", method = "GET")
+    public ResponseEntity<List<AlunoDTO>> listarTodosAlunos() {
+        List<AlunoModel> alunosEncontrados = alunoService.listarTodasContas();
+
+        List<AlunoDTO> alunosDTO = new ArrayList<>();
+        for (AlunoModel aluno : alunosEncontrados) {
+            AlunoDTO alunoDTO = new AlunoDTO(aluno.getNome(), aluno.getIdade(), aluno.getEmail());
+            alunosDTO.add(alunoDTO);
+        }
+
         logEventosService.gerarLogListarAll(TipoLogEvento.LISTOU_ALUNOS);
-        return ResponseEntity.ok(alunoService.listarTodasContas());
+        return ResponseEntity.ok(alunosDTO);
     }
 
     @GetMapping(path = "/alunos/{id}")
@@ -53,6 +62,7 @@ public class AlunoController {
     }
 
     @PostMapping("/alunos")
+    @Operation(summary = " : Cadastra um novo aluno", method = "POST")
     public ResponseEntity<AlunoDTO> cadastrarAluno(@RequestBody AlunoModel alunoModel){
         AlunoModel novoAluno = alunoService.criarAluno(alunoModel);
         logEventosService.gerarLogCadastroRealizado(novoAluno, TipoLogEvento.ALUNO_CADASTRADO);
@@ -62,6 +72,7 @@ public class AlunoController {
     }
 
     @DeleteMapping(path = "/alunos/{id}")
+    @Operation(summary = " : Deleta um aluno pelo ID", method = "DELETE")
     public void deletarAluno(@PathVariable Long id){
         Optional<AlunoModel> alunoEncontrado = alunoService.buscarAlunoPeloId(id);
         AlunoModel aluno = alunoEncontrado.orElseThrow(() -> new NoSuchElementException("Aluno não encontrado"));

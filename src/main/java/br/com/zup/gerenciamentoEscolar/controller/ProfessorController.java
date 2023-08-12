@@ -1,6 +1,9 @@
 package br.com.zup.gerenciamentoEscolar.controller;
 
+import br.com.zup.gerenciamentoEscolar.dto.AlunoDTO;
+import br.com.zup.gerenciamentoEscolar.dto.ProfessorDTO;
 import br.com.zup.gerenciamentoEscolar.enums.TipoLogEvento;
+import br.com.zup.gerenciamentoEscolar.model.AlunoModel;
 import br.com.zup.gerenciamentoEscolar.model.ProfessorModel;
 import br.com.zup.gerenciamentoEscolar.service.LogEventosService;
 import br.com.zup.gerenciamentoEscolar.service.ProfessorService;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -28,10 +32,19 @@ public class ProfessorController {
 
     @GetMapping("/professores")
     @Operation(summary = "Listar todos os professores", method = "GET")
-    public ResponseEntity<List<ProfessorModel>> listarTodosProfessores() {
+    public ResponseEntity<List<ProfessorDTO>> listarTodosProfessores() {
+        List<ProfessorModel> professoresEncontratos = professorService.listarTodosProfessores();
+
+        List<ProfessorDTO> professoresDTO = new ArrayList<>();
+        for (ProfessorModel professor : professoresEncontratos) {
+            ProfessorDTO professorDTO = new ProfessorDTO(professor.getNome(), professor.getCurso().toString());
+            professoresDTO.add(professorDTO);
+        }
+
         logEventosService.gerarLogListarAll(TipoLogEvento.LISTOU_PROFESSORES);
-        return ResponseEntity.ok(professorService.listarTodosProfessores());
+        return ResponseEntity.ok(professoresDTO);
     }
+
 
     @GetMapping("/professores/{id}")
     @Operation(summary = "Listar um professor pelo ID", method = "GET")
