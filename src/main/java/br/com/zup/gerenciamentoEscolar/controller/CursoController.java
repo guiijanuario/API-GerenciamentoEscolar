@@ -66,6 +66,7 @@ public class CursoController {
         return new ResponseEntity<>(novoCurso, HttpStatus.CREATED);
     }
 
+
     @DeleteMapping("/cursos/{id}")
     @Operation(summary = " : Deleta um curso pelo ID", method = "DELETE")
     public void deletarCurso(@PathVariable Long id) {
@@ -74,4 +75,6 @@ public class CursoController {
         logEventosService.gerarLogDeleteRealizado(curso, TipoLogEvento.CURSO_DELETADO);
         cursoService.deletarCurso(id);
     }
+
+
 }

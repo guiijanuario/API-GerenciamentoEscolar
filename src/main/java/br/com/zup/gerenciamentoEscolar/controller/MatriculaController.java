@@ -21,7 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/api/gerenciamentoEscolar", produces = {"application/json"})
 @Tag(name = "Feature - Matriculas")
-public class MatricularController {
+public class MatriculaController {
 
     @Autowired
     MatriculaService matriculaService;

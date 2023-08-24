@@ -1,5 +1,6 @@
 package br.com.zup.gerenciamentoEscolar.model;
 
+import br.com.zup.gerenciamentoEscolar.enums.CursosGraduacao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,4 +37,7 @@ public class ProfessorModel {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "curso_id")
     private CursoModel curso;
+
+    public ProfessorModel(long id, String professorGirafales, int idade, double salario, String s) {
+    }
 }

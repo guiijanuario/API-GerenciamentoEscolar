@@ -1,4 +1,4 @@
-package br.com.zup.Gerenciamento.Escolar;
+package br.com.zup.gerenciamentoEscolar;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

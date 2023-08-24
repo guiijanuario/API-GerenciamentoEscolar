@@ -1,7 +1,6 @@
 package br.com.zup.gerenciamentoEscolar.model;
 
 import br.com.zup.gerenciamentoEscolar.enums.TipoLogEvento;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
